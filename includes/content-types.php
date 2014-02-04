@@ -3,7 +3,7 @@
  * Content Type Functions
  *
  * Content types help theme determine which area of the site a user is viewing (blog, sermons, etc.)
- * It is useful for showing relevant sidebars, header banners, etc.
+ * It is useful for showing relevant sidebars, etc.
  *
  * @package    Church_Theme_Framework
  * @subpackage Functions

@@ -34,7 +34,7 @@ class CTFW_Breadcrumbs {
 	 * Constructor
 	 *
 	 * Set options passed in.
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @param array $options Options affecting display of breadcrumb path
@@ -45,14 +45,14 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Set options
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 */
 	public function set_options( $options ) {
 
 		$defaults = array(
-			'separator'	=> _x( ' > ', 'breadcrumb separator', 'church-theme-framework' ),
+			'separator'	=> _x( ' <span class="separator"></span> ', 'breadcrumb separator', 'church-theme-framework' ),
 		);
 
 		$this->options = wp_parse_args( $options, $defaults );
@@ -61,7 +61,7 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Add breadcrumb to array (single)
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @param array &$breadcrumbs Breadcrumbs data to update
@@ -77,7 +77,7 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Add breadcrumbs to array (multiple)
-	 * 
+	 *
 	 * @since 0.9
 	 * @param array &$breadcrumbs Breadcrumbs data to update
 	 * @param array $add_breadcrumbs Multiple breadcrumbs to add
@@ -92,7 +92,7 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Get post/page breadcrumbs
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @global object Post object
@@ -137,35 +137,35 @@ class CTFW_Breadcrumbs {
 			if ( $options['show_parents'] && ! empty( $post->post_parent ) ) {
 
 				$parent_post_breadcrumbs = array();
-				
+
 				// Traverse through parent posts
 				$parent_post_id = $post->post_parent;
 				while ( $parent_post_id ) { // keep moving down levels until there are no more parent posts
 
 					$parent_post = get_post( $parent_post_id );
 					$parent_post_id  = $parent_post->post_parent; // if this parent has a parent, while loop will continue
-					
+
 					$parent_post_breadcrumbs[] = array(
 						ctfw_shorten( get_the_title( $parent_post->ID ), $options['shorten'] ),
 						get_permalink( $parent_post->ID )
 					);
-					
+
 				}
-				
+
 				// Reverse parent post array and merge into main breadcrumbs
 				$this->add_breadcrumbs_array( $post_breadcrumbs, array_reverse( $parent_post_breadcrumbs ) );
-				
+
 			}
-		
+
 		}
-		
+
 		return apply_filters( 'ctfw_post_breadcrumbs', $post_breadcrumbs, $post_id );
 
 	}
 
 	/**
 	 * Get taxonomy term breadcrumbs
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @param mixed $term Taxonomy term as ID or object
@@ -175,9 +175,9 @@ class CTFW_Breadcrumbs {
 	public function taxonomy_term_breadcrumbs( $term, $taxonomy ) {
 
 		$term_breadcrumbs = array();
-			
+
 		if ( ! empty( $term ) ) {
-		
+
 			$term_obj = get_term( $term, $taxonomy ); // in case $term is ID, not already object
 
 			// Current term
@@ -190,7 +190,7 @@ class CTFW_Breadcrumbs {
 			if ( ! empty( $term_obj->parent ) ) {
 
 				$parent_term_breadcrumbs = array();
-				
+
 				// Traverse through parent terms
 				$parent_term_id = $term_obj->parent;
 				while ( $parent_term_id ) { // keep moving down levels until there are no more parent terms
@@ -201,26 +201,26 @@ class CTFW_Breadcrumbs {
 					$parent_term_breadcrumbs[] = array(
 						$parent_term->name,
 						get_term_link( $parent_term, $taxonomy )
-					);		
+					);
 
 				}
-				
+
 				// Reverse parent term array and marge into main breadcrumbs
 				$this->add_breadcrumbs_array( $term_breadcrumbs, $parent_term_breadcrumbs );
-				
+
 			}
-		
+
 		}
-		
+
 		$term_breadcrumbs = apply_filters( 'ctfw_taxonomy_term_breadcrumbs', $term_breadcrumbs, $term, $taxonomy );
-		
+
 		return $term_breadcrumbs;
 
 	}
 
 	/**
 	 * Get date breadcrumbs
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @param string $base_url Provide a base URL for custom post type archives
@@ -233,7 +233,7 @@ class CTFW_Breadcrumbs {
 		// Year
 		$year = get_query_var( 'year' );
 		if ( ! empty( $year ) ) {
-		
+
 			$dateformatstring = _x( 'Y', 'breadcrumb year format', 'church-theme-framework' );
 
 			if ( ! empty( $base_url ) ) { // if base URL given, use it (such as custom post type date archive)
@@ -241,24 +241,24 @@ class CTFW_Breadcrumbs {
 			} else {
 				$date_url = get_year_link( $year );
 			}
-			
+
 			$this->add_breadcrumb( $date_breadcrumbs, array(
 				date_i18n( $dateformatstring, mktime( 0, 0, 0, 1, 1, $year ) ),
 				$date_url
 			) );
-		
+
 			// Month
 			$month = get_query_var( 'monthnum' );
 			if ( ! empty( $month ) ) {
-			
+
 				$dateformatstring = _x( 'F', 'breadcrumb month format', 'church-theme-framework' );
-				
+
 				if ( ! empty( $base_url ) ) { // if base URL given, use it (such as custom post type date archive)
 					$date_url .= trailingslashit( $month );
 				} else {
 					$date_url = get_month_link( $year, $month );
 				}
-				
+
 				$this->add_breadcrumb( $date_breadcrumbs, array(
 					date_i18n( $dateformatstring, mktime( 0, 0, 0, $month, 1, $year ) ),
 					$date_url
@@ -267,26 +267,26 @@ class CTFW_Breadcrumbs {
 				// Day
 				$day = get_query_var( 'day' );
 				if ( ! empty( $day ) ) {
-				
+
 					$dateformatstring = _x( 'jS', 'breadcrumb day format', 'church-theme-framework' );
-					
+
 					if ( ! empty( $base_url ) ) { // if base URL given, use it (such as custom post type date archive)
 						$date_url .= trailingslashit( $day );
 					} else {
 						$date_url = get_day_link( $year, $month, $day );
 					}
-					
+
 					$this->add_breadcrumb( $date_breadcrumbs, array(
 						date_i18n( $dateformatstring, mktime( 0, 0, 0, $month, $day, $year ) ),
 						$date_url
 					) );
 
 				}
-				
-			}					
-			
+
+			}
+
 		}
-		
+
 		// Reverse order
 		$date_breadcrumbs = array_reverse( $date_breadcrumbs );
 
@@ -296,7 +296,7 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Build array
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @global object $post Post object
@@ -390,7 +390,7 @@ class CTFW_Breadcrumbs {
 						$this->add_breadcrumbs_array( $breadcrumbs, $this->post_breadcrumbs( $post_id, $options ) );
 
 					}
-					
+
 					// Archives
 					if ( is_archive() || ! empty( $taxonomy_term ) ) {
 
@@ -423,7 +423,7 @@ class CTFW_Breadcrumbs {
 
 						// Date Archive
 						elseif ( is_year() || is_month() || is_day() ) {
-							
+
 							// Append date breadcrumbs
 							$base_url = get_post_type_archive_link( $post_type );
 							$this->add_breadcrumbs_array( $breadcrumbs, $this->date_breadcrumbs( $base_url ) );
@@ -467,7 +467,7 @@ class CTFW_Breadcrumbs {
 						}
 
 					}
-					
+
 				}
 
 			}
@@ -488,7 +488,7 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Build string
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 */
@@ -504,13 +504,13 @@ class CTFW_Breadcrumbs {
 			// Output
 			$i = 0;
 			$count = count( $breadcrumbs );
-			$string .= '<div class="ctfw-breadcrumbs">';
+			$string .= '<div class="ctfw-breadcrumbs"><div class="ctfw-breadcrumbs-inner">';
 			foreach ( $breadcrumbs as $breadcrumb ) {
-				
+
 				$i++;
-				
+
 				$breadcrumb = (array) $breadcrumb;
-				
+
 				if ( ! empty( $breadcrumb[0] ) ) {
 
 					// Separator
@@ -522,16 +522,16 @@ class CTFW_Breadcrumbs {
 					if ( empty( $breadcrumb[1] ) ) { // add  || $i == $count if don't wany any last item linked, but it's more helpful and reable with it linked
 						$string .= '<span>' . esc_html( $breadcrumb[0] ) . '</span>';
 					}
-					
+
 					// Linked
 					else {
 						$string .= '<a href="' . esc_url( $breadcrumb[1] ) . '">' . esc_html( $breadcrumb[0] ) . '</a>';
 					}
 
 				}
-				
+
 			}
-			$string .= '</div>';
+			$string .= '</div></div>';
 
 		}
 
@@ -544,12 +544,12 @@ class CTFW_Breadcrumbs {
 
 	/**
 	 * Return string
-	 * 
+	 *
 	 * @since 0.9
 	 * @access public
 	 * @return string Breadcrumbs HTML
 	 */
-	
+
 	public function __toString() {
 		return $this->build_string();
 	}
