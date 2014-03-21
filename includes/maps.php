@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function ctfw_google_map( $options = false ) {
 
 	$html = '';
-	
+
 	if ( ! empty( $options['latitude'] ) && ! empty( $options['longitude'] ) ) {
 
 		// Enqueue map scripts to handle Google Maps init
@@ -39,8 +39,8 @@ function ctfw_google_map( $options = false ) {
 
 		// Pass location of map icons to JS
 		wp_localize_script( 'ctfw-maps', 'ctfw_maps', array(
-			'icon'			=> ctfw_color_url( apply_filters( 'ctfw_maps_icon_color_file', 'images/map-icon.png' ) ),
-			'icon_shadow'	=> ctfw_color_url( apply_filters( 'ctfw_maps_icon_shadow_color_file', 'images/map-icon-shadow.png' ) ),
+			'icon'			=> apply_filters( 'ctfw_maps_icon_color_file', ctfw_color_url( 'images/map-icon.png' ) ),
+			'icon_shadow'	=> apply_filters( 'ctfw_maps_icon_shadow_color_file', ctfw_color_url( 'images/map-icon-shadow.png' ) ),
 		));
 
 		// Type and zoom are optional
