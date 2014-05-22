@@ -29,18 +29,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function ctfw_google_map( $options = false ) {
 
 	$html = '';
-
+	
 	if ( ! empty( $options['latitude'] ) && ! empty( $options['longitude'] ) ) {
 
 		// Enqueue map scripts to handle Google Maps init
 		// this way the scripts are loaded only when feature is used, not on every page
-		wp_enqueue_script( 'google-maps', ctfw_current_protocol() . '://maps.googleapis.com/maps/api/js?sensor=false', false, null ); // no version, generic name to share w/plugins
+		wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?sensor=false', false, null ); // no version, generic name to share w/plugins
 		wp_enqueue_script( 'ctfw-maps', ctfw_theme_url( CTFW_JS_DIR . '/maps.js' ), array( 'jquery', 'google-maps' ), CTFW_VERSION ); // bust cache on theme update
 
 		// Pass location of map icons to JS
 		wp_localize_script( 'ctfw-maps', 'ctfw_maps', array(
-			'icon'			=> apply_filters( 'ctfw_maps_icon_color_file', ctfw_color_url( 'images/map-icon.png' ) ),
-			'icon_shadow'	=> apply_filters( 'ctfw_maps_icon_shadow_color_file', ctfw_color_url( 'images/map-icon-shadow.png' ) ),
+			'icon'			=> ctfw_color_url( apply_filters( 'ctfw_maps_icon_color_file', 'images/map-icon.png' ) )
 		));
 
 		// Type and zoom are optional
@@ -139,7 +138,7 @@ function ctfw_google_map_image( $options = array() ) {
 	$map_args = apply_filters( 'ctfw_google_map_image_args', $map_args );
 
 	// Add arguments to URL
-	$map_url = add_query_arg( $map_args, 'http://maps.googleapis.com/maps/api/staticmap' );
+	$map_url = add_query_arg( $map_args, '//maps.googleapis.com/maps/api/staticmap' );
 
 	// Filter URL
 	$map_args = apply_filters( 'ctfw_google_map_image_url', $map_args );
@@ -173,7 +172,7 @@ function ctfw_directions_url( $address ) {
 		$directions_address = ctfw_address_one_line( $address );
 
 		// Build URL to Google Maps
-		$directions_url = ctfw_current_protocol() . '://maps.google.com/maps?f=d&q=' . urlencode( $directions_address );
+		$directions_url = 'https://www.google.com/maps/dir//' . urlencode( $directions_address ) . '/'; // works with new and old maps
 
 	}
 

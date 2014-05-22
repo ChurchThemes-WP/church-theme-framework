@@ -6,7 +6,7 @@
  * It is intended for use in themes that use the Church Theme Content plugin.
  * 
  * @package   Church_Theme_Framework
- * @copyright Copyright (c) 2013, churchthemes.com
+ * @copyright Copyright (c) 2013 - 2014, churchthemes.com
  * @link      https://github.com/churchthemes/church-theme-framework
  * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -29,7 +29,7 @@ $theme_data = is_child_theme() ? wp_get_theme( $theme_data->template ) : $theme_
 /**
  * Framework constants
  */
-if ( ! defined( 'CTFW_VERSION' ) )				define( 'CTFW_VERSION', 			'1.0.9' );
+if ( ! defined( 'CTFW_VERSION' ) )				define( 'CTFW_VERSION', 			'1.2.3' );
 
 /**
  * Theme constants
@@ -90,6 +90,7 @@ $ctfw_includes = array(
 		// Functions
 		CTFW_INC_DIR . '/archives.php',
 		CTFW_INC_DIR . '/background.php',
+		CTFW_INC_DIR . '/body.php',
 		CTFW_INC_DIR . '/colors.php',
 		CTFW_INC_DIR . '/comments.php',
 		CTFW_INC_DIR . '/compatibility.php',

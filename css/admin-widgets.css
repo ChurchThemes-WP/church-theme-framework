@@ -1,10 +1,16 @@
 /**
  * Admin Widgets
+ *
+ * Appearance > Widgets and Customizer's widget controls both use these styles.
  */
  
 .ctfw-widget-field {
 	margin-bottom: 12px;
 }
+
+	.ctfw-widget-field:first-child {
+		margin-top: 12px;
+	}
 
 	.ctfw-widget-field.ctfw-widget-no-bottom-margin {
 		margin-bottom: 0;
@@ -53,7 +59,8 @@
 		}
 
 	.ctfw-widget-value .description {
-		margin-top: 3px !important;
+		margin-top: 6px !important;
+		padding: 0 !important;
 	}
 
 /* Hidden Fields */
@@ -91,4 +98,33 @@
 	display: none; /* initially */
 	margin: 10px 0;
 	color: #dc0909;
+}
+
+/**
+ * Customizer Dashicons
+ *
+ * http://melchoyce.github.io/dashicons/
+ *
+ * WordPress does some of this automatically in wp-admin/css/customize-widgets
+ * Here we're filling in the blanks or improving
+ */
+
+#available-widgets [class*="ctfw-highlight"] .widget-title:before {
+	content: "\f128"; /* dashicon-format-image */
+}
+
+#available-widgets [class*="ctfw-sermons"] .widget-title:before {
+	content: "\f236"; /* dashicon-video-alt3 */
+}
+
+#available-widgets [class*="ctfw-people"] .widget-title:before {
+	content: "\f307"; /* dashicon-groups */
+}
+
+#available-widgets [class*="ctfw-gallery"] .widget-title:before {
+	content: "\f232"; /* dashicon-images-alt */
+}
+
+#available-widgets [class*="ctfw-giving"] .widget-title:before {
+	content: "\f174"; /* dashicon-cart */
 }

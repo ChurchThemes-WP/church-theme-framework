@@ -168,6 +168,9 @@ function ctfw_google_fonts_style_url( $fonts, $font_subsets = false ) {
 
 	$available_fonts = ctfw_google_fonts();
 	
+	// In case there is one
+	$fonts = (array) $fonts;
+
 	// No duplicates
 	$fonts = array_unique( $fonts );
 
@@ -195,7 +198,7 @@ function ctfw_google_fonts_style_url( $fonts, $font_subsets = false ) {
 		}
 
 		// Build URL
-		$url = ctfw_current_protocol() . '://fonts.googleapis.com/css?family=' . $font_list . $subset_attr;
+		$url = '//fonts.googleapis.com/css?family=' . $font_list . $subset_attr;
 		
 	}
 	

@@ -6,7 +6,7 @@
  *
  * @package    Church_Theme_Framework
  * @subpackage Classes
- * @copyright  Copyright (c) 2013, churchthemes.com
+ * @copyright  Copyright (c) 2013 - 2014, churchthemes.com
  * @link       https://github.com/churchthemes/church-theme-framework
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * @since      0.9
@@ -52,7 +52,8 @@ class CTFW_Breadcrumbs {
 	public function set_options( $options ) {
 
 		$defaults = array(
-			'separator'	=> _x( ' <span class="separator"></span> ', 'breadcrumb separator', 'church-theme-framework' ),
+			'separator'	=> _x( ' > ', 'breadcrumb separator', 'church-theme-framework' ),
+			'classes'	=> '', // additional classes
 		);
 
 		$this->options = wp_parse_args( $options, $defaults );
@@ -339,6 +340,15 @@ class CTFW_Breadcrumbs {
 
 					// Get post type data
 					$post_type = get_post_type();
+
+					// No post type found
+					// Get post type via content type (section)
+					$post_types = ctfw_current_content_type_data( 'post_types' );
+					if ( is_array( $post_types ) && 1 == count( $post_types ) && isset( $post_types[0] ) ) { // use section's post type if only one
+						$post_type = $post_types[0];
+					}
+
+					// Get post type object
 					$post_type_obj = get_post_type_object( $post_type );
 
 					// Attachment
@@ -401,10 +411,17 @@ class CTFW_Breadcrumbs {
 
 						// Blog Tag
 						if ( is_tag() ) {
+
+							// Get tag name
+							$tag_data = get_term( get_query_var( 'tag_id' ), 'post_tag' );
+							$tag_name = ! empty( $tag_data->name ) ? $tag_data->name : get_query_var( 'tag' );
+
+							// Add tag to breadcrumb
 							$this->add_breadcrumb( $breadcrumbs, array(
-								get_query_var( 'tag' ),
+								$tag_name,
 								get_tag_link( get_query_var( 'tag_id' ) )
 							) );
+
 						}
 
 						// Custom Taxonomy and Parents
@@ -501,10 +518,13 @@ class CTFW_Breadcrumbs {
 		// Output breadcrumbs
 		if ( ! empty( $breadcrumbs ) ) {
 
+			// Additional classes?
+			$classes = $this->options['classes'] ? ' ' . $this->options['classes'] : '';
+
 			// Output
 			$i = 0;
 			$count = count( $breadcrumbs );
-			$string .= '<div class="ctfw-breadcrumbs"><div class="ctfw-breadcrumbs-inner">';
+			$string .= '<div class="ctfw-breadcrumbs' . $classes . '">';
 			foreach ( $breadcrumbs as $breadcrumb ) {
 
 				$i++;

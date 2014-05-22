@@ -15,6 +15,10 @@
 // No direct access
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/*******************************************
+ * VALUES
+ *******************************************/
+
 /**
  * Customization option ID
  *
@@ -90,3 +94,159 @@ function ctfw_customization( $option ) {
 function ctfw_customize_defaults() {
 	return apply_filters( 'ctfw_customize_defaults', array() );
 }
+
+/*******************************************
+ * SANITIZATION
+ *******************************************/
+
+/**
+ * Sanitize Checkbox
+ *
+ * This is useful for using directly with sanitize_callback and sanitize_js_callback.
+ *
+ * @since 1.1.4
+ * @param string $input The user-entered value
+ * @return string Sanitized value
+ */
+function ctfw_customize_sanitize_checkbox( $input, $object ) {
+
+	// True or empty
+	if ( 1 == $input ) {
+		$output = $input;
+	} else {
+		$output = '';
+	}
+
+	// Return sanitized, filterable
+	return apply_filters( 'ctfw_customize_sanitize_checkbox', $output, $input, $object );
+
+}
+
+/**
+ * Sanitize Single Choice
+ *
+ * Sanitize radio or single select.
+ *
+ * Check if input matches choices given and if not use default value when empty value not permitted.
+ *
+ * @since 1.1.4
+ * @param string $setting The setting being sanitized, as provided in defaults array
+ * @param string $input The user-entered value
+ * @param array $choices Valid choices to check against
+ * @return string Sanitized value
+ */
+function ctfw_customize_sanitize_single_choice( $setting, $input, $choices ) {
+
+	// Default values
+	$defaults = ctfw_customize_defaults();
+
+	// Not valid choice; use default if empty value not permitted
+	if ( ! isset( $choices[$input] ) && ! empty( $defaults[$setting]['no_empty'] ) ) {
+		$output = $defaults[$setting]['value'];
+	} else {
+		$output = $input; // valid choice
+	}
+
+	// Return sanitized, filterable
+	return apply_filters( 'ctfw_customize_sanitize_single_choice', $output, $setting, $input, $choices );
+
+}
+
+/**
+ * Sanitize Color
+ *
+ * If hex code empty or invalid, use default value when empty value is not permitted.
+ * Add # to front of hex code if missing.
+ *
+ * @since 1.1.4
+ * @param string $setting The setting being sanitized, as provided in defaults array
+ * @param string $input The user-entered value
+ * @return string Sanitized value
+ */
+function ctfw_customize_sanitize_color( $setting, $input ) {
+
+	// Default values
+	$defaults = ctfw_customize_defaults();
+
+	// Return null if hex code invalid
+	$output = sanitize_hex_color( $input );
+
+	// If invalid or empty and empty value not permitted, use default
+	if ( empty( $output ) && ! empty( $defaults[$setting]['no_empty'] ) ) {
+		$output = $defaults[$setting]['value'];
+	}
+
+	// Add # if missing
+	$output = maybe_hash_hex_color( $output );
+
+	// Return sanitized, filterable
+	return apply_filters( 'ctfw_customize_sanitize_color', $output, $setting, $input );
+
+}
+
+/**
+ * Sanitize Google Font
+ *
+ * Check if input matches choices given and if not use default value when empty value not permitted.
+ *
+ * @since 1.1.4
+ * @param string $setting The setting being sanitized, as provided in defaults array
+ * @param string $input Unsanitized value submitted by user
+ * @return string Sanitized value
+ */
+function ctfw_customize_sanitize_google_font( $setting, $input ) {
+
+	// Valid choices
+	$choices = ctfw_google_font_options_array( array( 'target' => $setting ) );
+
+	// Check input against options; use default if empty value not permitted
+	// ctfw_customize_sanitize_single_choice() is for radio or single select
+	$output = ctfw_customize_sanitize_single_choice( $setting, $input, $choices );
+
+	// Return sanitized, filterable
+	return apply_filters( 'ctfw_customize_sanitize_google_font', $output, $setting, $input );
+
+}
+
+/**
+ * Also see ctfw_sanitize_url_list() in includes/helpers.php.
+ * It is useful for social media URL lists in Customizer.
+ */
+
+
+/*********************************************
+ * SCRIPTS & STYLES
+ *********************************************/
+
+/**
+ * Enqueue JavaScript for customizer controls
+ *
+ * @since 1.2
+ */
+function ctfw_customize_enqueue_scripts() {
+
+	// New media uploader in WP 3.5+
+	wp_enqueue_media(); 
+
+	// Main widgets script
+	wp_enqueue_script( 'ctfw-admin-widgets', ctfw_theme_url( CTFW_JS_DIR . '/admin-widgets.js' ), array( 'jquery' ), CTFW_THEME_VERSION ); // bust cache on update
+	wp_localize_script( 'ctfw-admin-widgets', 'ctfw_widgets', ctfw_admin_widgets_js_data() ); // see admin-widgets.php
+
+}
+
+add_action( 'customize_controls_print_scripts', 'ctfw_customize_enqueue_scripts' );
+
+/**
+ * Enqueue styles for customizer controls
+ *
+ * @since 1.2
+ */
+function ctfw_customize_enqueue_styles() {
+
+	// Admin widgets
+	// Same stylesheet used for Appearance > Widgets
+	wp_enqueue_style( 'ctfw-widgets', ctfw_theme_url( CTFW_CSS_DIR . '/admin-widgets.css' ), false, CTFW_THEME_VERSION ); // bust cache on update
+
+}
+
+add_action( 'customize_controls_print_styles', 'ctfw_customize_enqueue_styles' );
