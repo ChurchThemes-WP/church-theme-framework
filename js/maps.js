@@ -56,7 +56,7 @@ jQuery( document ).ready( function( $ ) {
 
 			// Custom Marker
 			image = new google.maps.MarkerImage( ctfw_maps.icon,
-				new google.maps.Size( 26, 26 ),
+				new google.maps.Size( 52, 52 ),
 				new google.maps.Point( 0,0 ),
 				new google.maps.Point( 13, 26 ) );
 			marker = new google.maps.Marker( {
