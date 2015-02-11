@@ -585,7 +585,7 @@ class CTFW_Breadcrumbs {
 				}
 
 			}
-			$string .= '</div></div>';
+			$string .= '</div>';
 
 		}
 
