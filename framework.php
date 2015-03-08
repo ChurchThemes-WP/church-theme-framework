@@ -103,7 +103,6 @@ $ctfw_includes = array(
 		CTFW_INC_DIR . '/events.php',
 		CTFW_INC_DIR . '/fonts.php',
 		CTFW_INC_DIR . '/gallery.php',
-		CTFW_INC_DIR . '/head.php',
 		CTFW_INC_DIR . '/helpers.php',
 		CTFW_INC_DIR . '/images.php',
 		CTFW_INC_DIR . '/localization.php',
