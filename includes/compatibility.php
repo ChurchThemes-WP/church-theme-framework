@@ -193,58 +193,6 @@ function ctfw_ctc_plugin_installed() {
 
 }
 
-/**
- * Admin notice
- *
- * Show notice at top of admin until plugin is both installed and activated.
- *
- * @since 0.9
- */
-function ctfw_ctc_plugin_notice() {
-
-	// Show only on relevant pages as not to overwhelm the admin
-	$screen = get_current_screen();
-	if ( ! in_array( $screen->base, array( 'dashboard', 'themes', 'plugins' ) ) ) {
-		return;
-	}
-
-	// Plugin not installed
-	if ( ! ctfw_ctc_plugin_installed() && current_user_can( 'install_plugins' ) ) {
-
-		$notice = sprintf(
-			__( '<b>Plugin Required:</b> Please install and activate the <a href="%s" class="thickbox">Church Theme Content</a> plugin to use with the current theme.', 'church-theme-framework' ),
-			network_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . ctfw_ctc_plugin_slug() . '&TB_iframe=true&width=700&height=450' )
-		);
-
-	}
-
-	// Plugin installed but not activated
-	elseif ( ! ctfw_ctc_plugin_active() && current_user_can( 'activate_plugins' ) ) {
-
-		$notice = sprintf(
-			__( 'Please <a href="%s">activate</a> the <b>Church Theme Content</b> plugin required by the current theme.', 'church-theme-framework' ),
-			wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=' . ctfw_ctc_plugin_file() ), 'activate-plugin_' . ctfw_ctc_plugin_file() )
-		);
-
-	}
-
-	// Show notice
-	if (  isset( $notice ) ) {
-
-		?>
-		<div class="error">
-			<p>
-				<?php echo $notice; ?>
-			</p>
-		</div>
-		<?php
-
-	}
-
-}
-
-add_action( 'admin_notices', 'ctfw_ctc_plugin_notice' );
-
 /*******************************************
  * BROWSERS
  *******************************************/
