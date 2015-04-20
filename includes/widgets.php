@@ -44,9 +44,6 @@ function ctfw_widgets() {
 			'theme_support'				=> 'ctfw-widget-categories',	// add_theme_support() feature required (can be empty)
 			'theme_support_required'	=> array(),						// additional features theme must support for widget to register
 			'icon'						=> 'dashicons-microphone',
-			'unregister' 				=> array(						// widgets to unregister when this is registered
-											'WP_Widget_Categories'
-										),
 		),
 		'ctfw-posts' => array(
 			'class'						=> 'CTFW_Widget_Posts',
@@ -55,9 +52,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false,
 			'theme_support'				=> 'ctfw-widget-posts',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(
-				'WP_Widget_Recent_Posts'
-			)
 		),
 		'ctfw-sermons' => array(
 			'class'						=> 'CTFW_Widget_Sermons',
@@ -68,7 +62,6 @@ function ctfw_widgets() {
 			'theme_support_required'	=> array(
 				'ctc-sermons',
 			),
-			'unregister'				=> array(),
 		),
 		'ctfw-events' => array(
 			'class'						=> 'CTFW_Widget_Events',
@@ -79,7 +72,6 @@ function ctfw_widgets() {
 			'theme_support_required'	=> array(
 				'ctc-events',
 			),
-			'unregister'				=> array(),
 		),
 		'ctfw-gallery' => array(
 			'class'						=> 'CTFW_Widget_Gallery',
@@ -88,7 +80,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false, // uses native WordPress galleries
 			'theme_support'				=> 'ctfw-widget-gallery',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(),
 		),
 		'ctfw-galleries' => array(
 			'class'						=> 'CTFW_Widget_Galleries',
@@ -97,7 +88,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false, // uses native WordPress galleries
 			'theme_support'				=> 'ctfw-widget-galleries',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(),
 		),
 		'ctfw-people' => array(
 			'class'						=> 'CTFW_Widget_People',
@@ -108,7 +98,6 @@ function ctfw_widgets() {
 			'theme_support_required'	=> array(
 				'ctc-people',
 			),
-			'unregister'				=> array(),
 		),
 		'ctfw-locations' => array(
 			'class'						=> 'CTFW_Widget_Locations',
@@ -119,7 +108,6 @@ function ctfw_widgets() {
 			'theme_support_required'	=> array(
 				'ctc-locations',
 			),
-			'unregister'				=> array(),
 		),
 		'ctfw-archives' => array(
 			'class'						=> 'CTFW_Widget_Archives',
@@ -128,9 +116,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false,
 			'theme_support'				=> 'ctfw-widget-archives',
 			'theme_support_required'	=> array(),
-			'unregister' 				=> array(
-											'WP_Widget_Archives'
-										)
 		),
 		'ctfw-giving' => array(
 			'class'						=> 'CTFW_Widget_Giving',
@@ -139,7 +124,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false,
 			'theme_support'				=> 'ctfw-widget-giving',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(),
 		),
 		'ctfw-slide' => array(
 			'class'						=> 'CTFW_Widget_Slide',
@@ -148,7 +132,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false,
 			'theme_support'				=> 'ctfw-widget-slide',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(),
 		),
 		'ctfw-highlight' => array(
 			'class'						=> 'CTFW_Widget_Highlight',
@@ -157,7 +140,6 @@ function ctfw_widgets() {
 			'ctc_required'				=> false,
 			'theme_support'				=> 'ctfw-widget-highlight',
 			'theme_support_required'	=> array(),
-			'unregister'				=> array(),
 		),
 	);
 
@@ -216,13 +198,6 @@ function ctfw_register_widgets() {
 
 					// Register the widget
 					register_widget( $widget_data['class'] );
-
-					// Unregister widgets it replaces
-					if ( isset( $widget_data['unregister'] ) ) {
-						foreach ( $widget_data['unregister'] as $unregister_widget ) {
-							unregister_widget( $unregister_widget );
-						}
-					}
 
 				}
 
